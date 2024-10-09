@@ -22,7 +22,7 @@ metadata:
     
     When you are finished, you will need to:
     
-    1. Signature 
+    1. Sign
     1. Date of signature
   maturity: production
   estimated_completion_minutes: 10
@@ -37,7 +37,7 @@ metadata:
     - "District Court"
     - "Housing Court"
     - "Juvenile Court"
-    - "Land Court"
+    - "LAND COURT"
     - "Probate and Family Court"
     - "Superior Court"
   typical_role: "defendant"
@@ -85,7 +85,7 @@ code: |
   allowed_courts = ['Boston Municipal Court', 'District Court', 'Housing Court', 'Juvenile Court', 'Land Court', 'Probate and Family Court', 'Superior Court']
 
   # Initialize trial_court object (can be a variable)
-  trial_court = {'department': None}
+  # trial_court = {'department': None}
 
   nav.set_section("review_motion_to_vacate_default_judgment")
   user_role = "defendant"
@@ -97,6 +97,7 @@ code: |
   set_progress(20)
   users[0].address.address
   users[0].phone_number
+  users[0].signature
   signature_date
   set_progress(40)
   docket_number
@@ -145,7 +146,7 @@ subquestion: |
 
   Most people take about 10 minutes to complete this interview.
 ---
-id: Screen one
+id: Court Information
 question: |
   Please provide the following details:
 fields:
@@ -164,6 +165,25 @@ fields:
       - "Land Court"
       - "Probate and Family Court"
       - "Superior Court"
+---
+id: court_type_check
+question: |
+  You selected the following court type:
+  **Court Type:** ${ trial_court.department }
+
+  **Is it a Small Claims case?**: ${ small_claims }
+
+  Click continue to proceed.
+#--- 
+#id: signature_draw 
+#question: |
+#  Please provide your signature below. 
+#subquestion: |
+#  You can use your mouse to draw your signature in the box.
+#fields:
+#  - Signature: users[0].signature 
+#    datatype: signature
+#    required: True
 ---
 id: preview motion_to_vacate_default_judgment
 question: |
@@ -299,7 +319,7 @@ progress: 100
 ---
 # ALDocument objects specify the metadata for each template
 objects:
-  - motion_to_vacate_default_judgment_Post_interview_instructions: ALDocument.using(title="Instructions", filename="motion_to_vacate_default_judgment_next_steps.docx", enabled=True, has_addendum=False)
+  - motion_to_vacate_default_judgment_Post_interview_instructions: ALDocument.using(title="Instructions", filename="MAmotion_to_vacate_default_judgment.docx", enabled=True, has_addendum=False)
   - motion_to_vacate_default_judgment_attachment: ALDocument.using(title="Motion to Vacate Default Judgment", filename="motion_to_vacate_default_judgment", enabled=True, has_addendum=False, )
 ---
 # Bundles group the ALDocuments into separate downloads, such as for court and for the user
@@ -313,7 +333,7 @@ objects:
 attachment:
   name: Post-interview-Instructions
   filename: motion_to_vacate_default_judgment_next_steps
-  docx template file: motion_to_vacate_default_judgment_next_steps.docx
+  docx template file: MAmotion_to_vacate_default_judgment.docx
   variable name: motion_to_vacate_default_judgment_Post_interview_instructions[i]
   skip undefined: True
   tagged pdf: True
@@ -323,7 +343,7 @@ attachment:
   filename: motion_to_vacate_default_judgment
   variable name: motion_to_vacate_default_judgment_attachment[i]
   skip undefined: True
-  docx template file: motion_to_vacate_default_judgment.docx
+  docx template file: MAmotion_to_vacate_default_judgment.docx
   tagged pdf: True
 
 
